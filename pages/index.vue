@@ -20,7 +20,10 @@
       </div>
       <div class="grid gap-12">
         <div class="flex justify-center card">
-          <NuxtLink class="flex items-center btn" to="/report-details">
+          <NuxtLink
+            class="flex items-center btn btn-primary"
+            to="/report-details"
+          >
             Create new Space Report
             <svg class="w-5 h-5 ml-1" fill="currentColor" viewBox="0 0 20 20">
               <path
@@ -32,14 +35,9 @@
           </NuxtLink>
         </div>
         <div class="card">
-          <!-- todo add gradient text -->
-          <p class="text-lg font-bold text-center">Fun space facts:</p>
+          <p class="text-lg font-bold text-center">Fun space fact</p>
           <p class="mt-4">
-            Sed laoreet sem metus, eu malesuada nibh laoreet non. Nulla
-            facilisi. Quisque nec odio sed ex bibendum consequat. Vivamus
-            ullamcorper tempus nisi vel mattis. Donec gravida velit id venenatis
-            gravida. You can here add some fun space facts to amuse us when we
-            are going through the code test.
+            {{ selectedFact }}
           </p>
         </div>
       </div>
@@ -49,14 +47,18 @@
 </template>
 
 <script setup>
+import facts from "@/assets/spacefacts.json";
+
 const router = useRouter();
 const user = useUser();
 const report = useState("report");
-console.log("ruinning setup");
-report.value = undefined;
+const isUpdating = useState("isUpdating", () => false);
+let reports = [];
+
+const selectedFact = ref(facts[Math.floor(Math.random() * facts.length)]);
 
 const updateReport = (selectedReport) => {
-  console.log("report:", selectedReport);
+  isUpdating.value = true;
   report.value = selectedReport;
 
   router.push({
@@ -64,13 +66,20 @@ const updateReport = (selectedReport) => {
   });
 };
 
-const fullName = computed(() => {
-  return `${user.value.first_name} ${user.value.last_name} (${user.value.code_name})`;
+onMounted(() => {
+  report.value = undefined;
+  isUpdating.value = false;
 });
 
-const userKey = `reports-by-${user.value.id}`;
-const userReports = localStorage.getItem(userKey) || "[]";
-const reports = ref(JSON.parse(userReports));
+const fullName = computed(() => {
+  return `${user?.value?.first_name} ${user?.value?.last_name} (${user?.value?.code_name})`;
+});
+
+if (user.value) {
+  const userKey = `reports-by-${user.value.id}`;
+  const userReports = localStorage.getItem(userKey) || "[]";
+  reports = ref(JSON.parse(userReports));
+}
 </script>
 
 <style lang="scss" scoped></style>
