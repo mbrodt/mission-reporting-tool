@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.card {
+  @apply p-8 bg-white shadow-xl rounded-xl;
+}
+
+.btn {
+  @apply px-4 py-2 font-bold transition-all duration-150 rounded;
+}
+
+.btn-primary {
+  @apply text-white bg-black hover:bg-opacity-80;
+}
+
+.btn-secondary {
+  @apply text-black bg-transparent border border-black hover:bg-black hover:text-white;
+}
+
+.main-grid {
+  @apply grid max-w-5xl grid-cols-2 gap-12 mx-auto;
+}
+
+.text-input {
+  @apply w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none;
+}

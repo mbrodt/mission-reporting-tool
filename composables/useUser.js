@@ -1,6 +1,5 @@
 export default () => {
   const user = useState("user");
-  console.log("user in useUser:", user);
 
   const localUser = localStorage.getItem("user");
   if (!localUser) {
