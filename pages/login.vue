@@ -39,7 +39,7 @@
             Something went wrong
           </p>
           <div class="flex items-center justify-between">
-            <button class="mt-6 btn" type="submit">Login</button>
+            <button class="mt-6 btn btn-primary" type="submit">Login</button>
           </div>
         </div>
       </form>

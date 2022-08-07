@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-4xl font-bold text-center">Confirm report details</h1>
+    <h1 class="mb-4 text-4xl font-bold text-center">Confirm report details</h1>
     <div class="main-grid">
       <div class="col-span-2 card main-grid">
         <div>

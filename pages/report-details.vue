@@ -50,9 +50,18 @@ import "@vuepic/vue-datepicker/dist/main.css";
 
 const report = useState("report");
 
+// When updating, the date has been converted to a string - so we turn it back into a date object
+if (report.value.date && typeof report.value.date !== "object") {
+  report.value.date = new Date(report.value.date);
+}
+
 definePageMeta({
   layout: "report",
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style>
+.dp__active_date {
+  --dp-primary-color: black;
+}
+</style>

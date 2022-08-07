@@ -1,17 +1,18 @@
 <template>
   <div class="main-grid">
     <div>
-      <p>Mission images:</p>
       <div class="card min-h-[520px]">
+        <p class="mb-2">Select images for the report</p>
         <ImageGrid :images="loadedImages" @image-click="selectImage" />
-        <button class="block mx-auto mt-4 btn" @click="counter++">
+        <button class="block mx-auto mt-4 btn btn-secondary" @click="counter++">
           Load more
         </button>
       </div>
     </div>
     <div>
-      <p>Selected images for report:</p>
-      <div class="card min-h-[192px]">
+      <div class="card min-h-[192px]" v-if="report.images.length">
+        <p class="mb-2">Selected images</p>
+
         <ImageGrid :images="report.images" @image-click="removeImage" />
       </div>
     </div>
