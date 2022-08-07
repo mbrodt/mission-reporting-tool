@@ -19,27 +19,25 @@
       </div>
     </div>
     <slot />
-    <div class="flex justify-between max-w-5xl mx-auto mt-4">
-      <NuxtLink :to="prevStep.path" class="btn"
-        >Back to {{ prevStep.name }}</NuxtLink
+    <div class="flex justify-between max-w-5xl mx-auto mt-8">
+      <NuxtLink :to="prevStep.path" class="btn btn-primary"
+        >Back: {{ prevStep.name }}</NuxtLink
       >
       <NuxtLink
         v-if="activeStep.name !== 'Confirmation'"
         :to="nextStep.path"
-        class="btn"
+        class="btn btn-primary"
         >Next: {{ nextStep.name }}</NuxtLink
       >
-      <button @click="saveReport" class="btn" v-else>Finish report</button>
+      <button @click="saveReport" class="btn btn-primary" v-else>
+        Finish report
+      </button>
     </div>
-    <pre>
-      {{ report }}
-    </pre>
   </div>
 </template>
 
 <script setup>
 const router = useRouter();
-console.log("layout");
 
 function uuidv4() {
   return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
@@ -52,14 +50,14 @@ function uuidv4() {
 
 const user = useUser();
 let report = useState("report");
-console.log("REPORT IN LAYOUT:", report.value);
+const isUpdating = useState("isUpdating");
 
 if (!report.value) {
   report = useState("report", () => ({
     id: uuidv4(),
     name: "",
     description: "",
-    date: "",
+    date: new Date(),
     images: [],
     location: null,
   }));
@@ -73,17 +71,17 @@ const steps = reactive([
   },
   {
     step: 1,
-    name: "Details",
+    name: "Report details",
     path: "/report-details",
   },
   {
     step: 2,
-    name: "Images",
+    name: "Select images",
     path: "/report-images",
   },
   {
     step: 3,
-    name: "Location",
+    name: "ISS Location",
     path: "/report-location",
   },
   {
@@ -114,11 +112,16 @@ const saveReport = () => {
     ...report.value,
     user: user.value,
   };
-  console.log(reportToSave);
   const userKey = `reports-by-${user.value.id}`;
   const currentReports = JSON.parse(localStorage.getItem(userKey) || "[]");
-  console.log("currentReports:", currentReports);
-  currentReports.push(reportToSave);
+  if (!isUpdating.value) {
+    currentReports.push(reportToSave);
+  } else {
+    const index = currentReports.findIndex(
+      (report) => report.id === reportToSave.id
+    );
+    currentReports[index] = reportToSave;
+  }
   localStorage.setItem(userKey, JSON.stringify(currentReports));
   router.push("/");
 };
